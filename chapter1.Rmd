@@ -9,5 +9,9 @@
 date()
 
 ```
-The text continues here.
+This is a good introduction to the course. 
+I am really excited about this course and hope to learn alot as a start to my data science journey.
+I saw this coures on weboodi and was really interested.
 
+
+my link: https://github.com/swachiye/IODS-project

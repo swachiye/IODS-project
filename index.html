@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
 
 <meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
-<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -286,6 +286,7 @@ code {
 }
 img {
   max-width:100%;
+  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -347,7 +348,6 @@ summary {
   border: none;
   display: inline-block;
   border-radius: 4px;
-  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -359,6 +359,18 @@ summary {
   display: none;
 }
 </style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
 
 <!-- code folding -->
 
@@ -401,8 +413,9 @@ summary {
 <pre class="r"><code># This is a so-called &quot;R chunk&quot; where you can write R code.
 
 date()</code></pre>
-<pre><code>## [1] &quot;Tue Oct 20 13:26:17 2020&quot;</code></pre>
-<p>The text continues here.</p>
+<pre><code>## [1] &quot;Sun Nov 01 20:36:52 2020&quot;</code></pre>
+<p>This is a good introduction to the course. I am really excited about this course and hope to learn alot as a start to my data science journey. I saw this coures on weboodi and was really interested.</p>
+<p>my link: <a href="https://github.com/swachiye/IODS-project" class="uri">https://github.com/swachiye/IODS-project</a></p>
 <hr />
 </div>
 <div id="insert-chapter-2-title-here" class="section level1">
@@ -414,7 +427,7 @@ date()</code></pre>
 <li>Assume the reader has no previous knowledge of your data or the more advanced methods you are using.</li>
 </ul>
 <pre class="r"><code>date()</code></pre>
-<pre><code>## [1] &quot;Tue Oct 20 13:26:17 2020&quot;</code></pre>
+<pre><code>## [1] &quot;Sun Nov 01 20:36:52 2020&quot;</code></pre>
 <p>Here we go again…</p>
 <hr />
 <p>(more chapters to be added similarly as we proceed with the course!)</p>
@@ -437,23 +450,6 @@ $(document).ready(function () {
 
 
 </script>
-
-<!-- tabsets -->
-
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
-<!-- code folding -->
-
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
