@@ -1,23 +1,28 @@
 # **Regession and Model Validation**
 
-Sheila Wachiye
+Author: Sheila Wachiye
 
-November 5 2020
+Date:   November 5 2020
 
 
 # *Introduction*
 What is regression?
 
-Regression is a statistical method used to assess the relationship between a dependent variable and one and more independent variables.
+Regression is a statistical method used to assess the relationship between a dependent variable and one and more independent variables. The dependent variable can be seen as response variable while the independent variables as explanatory variables. 
 
 What is model validation?
-
+According to wikipedia, a model validation is the task of confirming that the outputs of a statistical model have enough fidelity to the outputs of the data-generating process that the objectives of the investigation can be achieved.
 
 # *Steps*
-1.Load "students2014" data to be analysized 
 
-Do this by assigning it a name and in this case we use "lrn14".
-We then use *read.table* function, to read the file in a table format and creates a data frame.
+Regression analysis using RMarkdown include the following steps
+For this report, we will be using "learning2014" 
+
+[Data can be accessed from this site ](https://www.rstudio.com)http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/learning2014.txt)
+
+1.Load data into Rmarkdown and assign it a working name.
+In this case we use "lrn14".
+Use *read.table* function, to read the file in a table format and creates a data frame.
 
 The separator is a comma "," and the file includes a header
 ```{r}
@@ -26,14 +31,15 @@ lrn14 <- read.table("http://s3.amazonaws.com/assets.datacamp.com/production/cour
 
 2. To have an idea of how the data looks like. 
 
-We can look at the data structure 
+Look at the structure and the dimension of the data
 ```{r}
+# data structure
 str(lrn14)
-```
- We can also look at the data dimensions 
-```{r}
+ 
+# data dimensions
 dim(lrn14)
 ```
+
 
 3. We can also Visualization the data by creating graphics using *ggplots function* in R
 
@@ -121,10 +127,113 @@ summary(my_model)
 ```{r}
 # learning2014 is available
 
-# fit a linear model
+## create a regression model with multiple explanatory variables
 my_model2 <- lm(points ~ attitude+ stra+ surf, data = lrn14)
-
 # print out a summary of the model
-
 summary(my_model2)
+# draw diagnostic plots using the plot() function. Choose the plots 1, 2 and 5
+par(mfrow = c(2,2))
+plot(my_model2, which= c(1, 2, 5))
+
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
