@@ -73,48 +73,85 @@ p4 <- p3 + ggtitle("Student's attitude in relation to exam points")
 p4
 ```
 
-# Use scatter plot matrix of the variables in learning2014 to assess the distributions and correlations between the variables.
+Use scatter plot matrix of the variables in learning2014 to assess the distributions and correlations between the variables.
 ```{r}
 # [-1] excludes the first column (gender)
  pairs(lrn14[-1])
 
 ```
-# access the GGally and ggplot2 libraries
+To assess the strengths and direction of correlation between the variables, create a more advanced plot matrix with *ggpairs()*. This matrix will give the correlation coefficient (R), which is a  measures of strength and direction of a relationship between two variables on a scatterplot. 
+
+The value of R is lies between +1 (postive correlation) and –1( negative correlation). A positive correlation implies that the two variables under consideration vary in the same direction, i.e., if a variable increases the other one increases and if one decreases the other one decreases as well. A negative correlation means that the two variables under consideration vary in opposite directions, that is, if a variable increases the other decreases and vice versa.  
+The strenght of the correlations is how close the R is to +1 for a strong positive result or how close to -1 for a strong negative correlation. 
+
+However, a correlation close to 0 indicates no correlation and thus the two variables are independent.
 ```{r}
+# access GGally using library
 library(GGally)
-# create a more advanced plot matrix with ggpairs()
+
+# create a more advanced plot matrix with ggpairs() ns
 p5 <- ggpairs(lrn14, mapping = aes(), lower = list(combo = wrap("facethist", bins = 20)))
-# plot 
+
+# plot and take note of the correlations
 p5
 ```
+With Exam points as the target (dependent) variable. We note that Exams points is positively correlated to Attitude(R= 0.44) and strategic learning (R= 0.15) but negatively correlated to surface learning (R= 0.14)
+
+We select this three variable to include in our multiple regresion model
+
+**Multiple Regression**
+
+Multiple regression is a form of linear regression that permit predictions of the dependent variables with multiple independent variables i.e. the relationship between one dependent variable and two or more independent variables. This is done by basically adding more independent variables to the linear regression equation, with each term representing the impact of a different variable.
+
+Formula: Y = β~0 + β1~1X~1 + β1~2X~2 + β1~3X~3 + ε.
 
 ```{r}
 # learning2014 is available
 
+# create a regression model with multiple explanatory variables (Note from the above matrix that shows correlation with Exam Points). Thus we have attutude, stra and surf
+
+Model_1 <- lm(points ~ attitude+ stra+ surf, data = lrn14)
+
+# print out a summary of the model
+summary(Model_1)
+```
+Diagnostic Plots
+Diagnostic plots provide checks for homogeneity of variance, normality, and influential observerations.
+```{r}
+# draw diagnostic plots using the plot() function. Choose the plots 1, 2 and 5
+par(mfrow = c(2,2)) # Create a 2 x 2 plotting matrix
+plot(Model_1, which= c(1, 2, 5))
+
+```
+
+
+```{r}
+# Example
 # a scatter plot of points versus attitude
-library(ggplot2)
 qplot(attitude, points, data = lrn14) + geom_smooth(method = "lm")
 
 # fit a linear model
-my_model <- lm(points ~ attitude, data = lrn14)
+ # Formula Y = β0 + β1X + ε.
+
+model1 <- lm(points ~ attitude, data = lrn14)
 
 # print out a summary of the model
-
-summary(my_model)
+summary(model1)
 ```
+In the above output, we can deduce that the estimate of the intercept β0 = 11.6372, and the estimate of the
+slope β1 = 3.5255, 
+
+Therefore, the line of best fit is
+
+Points = 11.6372 + 3.5255 x Attitude
+
+The R2 is 0.1906. 
+
+R2 is a measure of the linear relationship between our predictor variable (Attitude) and our response (points). 
+
+P-value is the significance level of the t-test (p-value = 4.119e-09), thus based on the result, Attitude is statistically signficant in explaining 19% of variations in exams points at confidence level of 95%
+
 ```{r}
-# learning2014 is available
-
-# fit a linear model
-my_model1 <- lm(points ~ stra, data = lrn14)
-
-# print out a summary of the model
-
-summary(my_model1)
-```
-```{r}
-# learning2014 is available
-
 # a scatter plot of points versus attitude
 library(ggplot2)
 qplot(attitude, points, data = lrn14) + geom_smooth(method = "lm")
@@ -127,17 +164,13 @@ my_model <- lm(points ~ surf, data = lrn14)
 summary(my_model)
 ```
 ```{r}
-# learning2014 is available
+# fit a linear model
+model2 <- lm(points ~ stra, data = lrn14)
 
-## create a regression model with multiple explanatory variables
-my_model2 <- lm(points ~ attitude+ stra+ surf, data = lrn14)
 # print out a summary of the model
-summary(my_model2)
-# draw diagnostic plots using the plot() function. Choose the plots 1, 2 and 5
-par(mfrow = c(2,2))
-plot(my_model2, which= c(1, 2, 5))
-
+summary(model2)
 ```
+
 
 
 
