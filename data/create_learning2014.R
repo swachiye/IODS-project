@@ -55,4 +55,15 @@ str(learning2014)
 #Save the learning2014 dataset as .csv into the ‘data’ folder
 write.csv(learning2014, "learning2014.csv") 
 
+# Read the new dataset "learning2014.csv"
+data <- read.csv("learning2014.csv")
+
+# Assess the top values of the datasets
+head(learning2014)
+
+#Look at the structure
+str(learning2014)
+
+
+
 
