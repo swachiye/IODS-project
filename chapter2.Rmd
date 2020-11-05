@@ -4,34 +4,34 @@ Author: Sheila Wachiye
 
 Date:   November 5 2020
 
-
 # *Introduction*
-What is regression?
+**Regression?**
 
 Regression is a statistical method used to assess the relationship between a dependent variable and one and more independent variables. The dependent variable can be seen as response variable while the independent variables as explanatory variables. 
 
-What is model validation?
+**Model validation?**
 According to wikipedia, a model validation is the task of confirming that the outputs of a statistical model have enough fidelity to the outputs of the data-generating process that the objectives of the investigation can be achieved.
-
-# *Steps*
 
 Regression analysis using RMarkdown include the following steps
 For this report, we will be using "learning2014" 
 
-[Data can be accessed from this site ](https://www.rstudio.com)http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/learning2014.txt)
+View data using the following link
 
-1.Load data into Rmarkdown and assign it a working name.
-In this case we use "lrn14".
-Use *read.table* function, to read the file in a table format and creates a data frame.
+[Data](https://www.rstudio.com)http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/learning2014.txt)
 
-The separator is a comma "," and the file includes a header
+**Load data into Rmarkdown**
+
+Load data by assigning a name. In this case we use "lrn14". Use *read.table* function, to read the file in a table format and creates a data frame. The separator is a comma "," and the file includes a header
+
 ```{r}
 lrn14 <- read.table("http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/learning2014.txt", sep=",", header=TRUE)
 ```
 
-2. To have an idea of how the data looks like. 
 
-Look at the structure and the dimension of the data
+**Visualise data **
+
+Data structure and dimensions 
+
 ```{r}
 # data structure
 #
@@ -41,19 +41,29 @@ str(lrn14)
 # This gives you the number of rows and columns in the data frame
 dim(lrn14)
 ```
+Based on the above output
+We have 166 observaions which are the rows and 7 variables in the columns
 
+```{r}
+# Obtain the first several rows of a data frame using head
+head(lrn14) 
 
-3. To visualise data, we can create graphics using *ggplots function*.
+# obtain the column names
+colnames(lrn14)
+ 
+```
 
- Ggplot2 is an implementation of Leland Wilkinson's Grammar of Graphics which is popula for data  visualization.
-Install ggplots using *install.packages(ggplots2)* 
+Ceate graphics using *ggplots function*.
+
+Ggplot2 is an implementation of Leland Wilkinson's Grammar of Graphics which is popula for data  visualization.
 
 Access the *gglot2* in Rmarkdown using library
 ```{r}
 library(ggplot2)
 ```
 
-To visualise points against the students attitude, initialize plot with data and aesthetic mapping. 
+
+Plot Exams points against the students attitude
 
 To highlight the distribution of the attitude based on gender, use *col(gender)*. This will assign different colors for each of the gender.
 ```{r}
@@ -79,6 +89,9 @@ Use scatter plot matrix of the variables in learning2014 to assess the distribut
  pairs(lrn14[-1])
 
 ```
+
+** Correlations between the variables in the dataframe**
+
 To assess the strengths and direction of correlation between the variables, create a more advanced plot matrix with *ggpairs()*. This matrix will give the correlation coefficient (R), which is a  measures of strength and direction of a relationship between two variables on a scatterplot. 
 
 The value of R is lies between +1 (postive correlation) and –1( negative correlation). A positive correlation implies that the two variables under consideration vary in the same direction, i.e., if a variable increases the other one increases and if one decreases the other one decreases as well. A negative correlation means that the two variables under consideration vary in opposite directions, that is, if a variable increases the other decreases and vice versa.  
@@ -95,6 +108,8 @@ p5 <- ggpairs(lrn14, mapping = aes(), lower = list(combo = wrap("facethist", bin
 # plot and take note of the correlations
 p5
 ```
+
+
 With Exam points as the target (dependent) variable. We note that Exams points is positively correlated to Attitude(R= 0.44) and strategic learning (R= 0.15) but negatively correlated to surface learning (R= 0.14)
 
 We select this three variable to include in our multiple regresion model
@@ -103,7 +118,7 @@ We select this three variable to include in our multiple regresion model
 
 Multiple regression is a form of linear regression that permit predictions of the dependent variables with multiple independent variables i.e. the relationship between one dependent variable and two or more independent variables. This is done by basically adding more independent variables to the linear regression equation, with each term representing the impact of a different variable.
 
-Formula: Y = β~0 + β1~1X~1 + β1~2X~2 + β1~3X~3 + ε.
+Formula: Y = β~0~ + β1~1~X~1~ + β1~2~X~2~ + β1~3~X~3~ + ε.
 
 ```{r}
 # learning2014 is available
@@ -114,29 +129,36 @@ Model_1 <- lm(points ~ attitude+ stra+ surf, data = lrn14)
 
 # print out a summary of the model
 summary(Model_1)
-```
-Diagnostic Plots
-Diagnostic plots provide checks for homogeneity of variance, normality, and influential observerations.
-```{r}
-# draw diagnostic plots using the plot() function. Choose the plots 1, 2 and 5
-par(mfrow = c(2,2)) # Create a 2 x 2 plotting matrix
-plot(Model_1, which= c(1, 2, 5))
 
+#This is the output you should receive.
 ```
+* Call: Shows the model formula and variables used to create the model.
 
+* Residuals: Gives the difference between what the model predicted and the actual value of y.  
+
+* Coefficients: Provide the weights that minimize the sum of the square of the errors.  
+
+P-value is the significance level of the t-test (p-value = 3.156e-08), shows that the overall models including attitude, strategic learning and surface learning is statistically signficant in explaining 21% of variations in exams points at confidence level of 95%
+
+However, individually, only attitude is significant (p-value = 1.93e-08) in explaning variation in exam points.
+
+Thus, we only include attitude in our model, simple linear regression
+
+Formula: Y = β~0~ + β1~1~X~1~ + ε.
 
 ```{r}
 # Example
-# a scatter plot of points versus attitude
+# a scatter plot of Exam points versus attitude
 qplot(attitude, points, data = lrn14) + geom_smooth(method = "lm")
 
 # fit a linear model
- # Formula Y = β0 + β1X + ε.
 
-model1 <- lm(points ~ attitude, data = lrn14)
+Model_2 <- lm(points ~ attitude, data = lrn14)
 
 # print out a summary of the model
-summary(model1)
+summary(Model_2)
+
+#This is the output you should receive.
 ```
 In the above output, we can deduce that the estimate of the intercept β0 = 11.6372, and the estimate of the
 slope β1 = 3.5255, 
@@ -151,29 +173,15 @@ R2 is a measure of the linear relationship between our predictor variable (Attit
 
 P-value is the significance level of the t-test (p-value = 4.119e-09), thus based on the result, Attitude is statistically signficant in explaining 19% of variations in exams points at confidence level of 95%
 
+
+**Diagnostic Plots**
+Diagnostic plots provide checks for homogeneity of variance, normality, and influential observerations.
 ```{r}
-# a scatter plot of points versus attitude
-library(ggplot2)
-qplot(attitude, points, data = lrn14) + geom_smooth(method = "lm")
+# draw diagnostic plots using the plot() function. Choose the plots 1, 2 and 5
+par(mfrow = c(2,2)) # Create a 2 x 2 plotting matrix
+plot(Model_1, which= c(1, 2, 5))
 
-# fit a linear model
-my_model <- lm(points ~ surf, data = lrn14)
-
-# print out a summary of the model
-
-summary(my_model)
 ```
-```{r}
-# fit a linear model
-model2 <- lm(points ~ stra, data = lrn14)
-
-# print out a summary of the model
-summary(model2)
-```
-
-
-
-
 
 
 
