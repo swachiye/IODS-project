@@ -2,10 +2,10 @@
 # Author: Sheila Wachiye
 # Data :  November 5 2020
 
-# Introduction to Regerssion modelling and model validation
+# Introduction to Regression analysis and model validation
 
 #Read the learning2014 data and assigh it a new name "DataLrn14"
-DataLrn14 <- read.table("http://www.helsinki.fi/~kvehkala/JYTmooc/JYTOPKYS3-DataLrn14.txt", sep="\t", header=TRUE)
+DataLrn14 <- read.table("https://www.mv.helsinki.fi/home/kvehkala/JYTmooc/JYTOPKYS3-data.txt", sep="\t", header=TRUE)
 colnames(DataLrn14)
 # The dimensions of the DataLrn14
 dim(DataLrn14)
