@@ -24,40 +24,115 @@ The separator is a comma "," and the file includes a header
 lrn14 <- read.table("http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/learning2014.txt", sep=",", header=TRUE)
 ```
 
-2. To have an idea of how the data looks like, we can 
+2. To have an idea of how the data looks like. 
 
- i. Look at the data structure 
- This shows 
+We can look at the data structure 
 ```{r}
 str(lrn14)
 ```
- ii. or the data dimensions 
+ We can also look at the data dimensions 
 ```{r}
 dim(lrn14)
 ```
+
 3. We can also Visualization the data by creating graphics using *ggplots function* in R
 
  Ggplot2 is an implementation of Leland Wilkinson's Grammar of Graphics which is popula for data  visualization.
 Install ggplots using *install.packages(ggplots2)*
 
-# Access the gglot2 using library
+Access the *gglot2* using library
 ```{r}
 library(ggplot2)
 ```
 
-# To plot points against attitude,initialize plot with data and aesthetic mapping. 
-Include *col(Gender)* to highlight the gender distribution based on the attitude.
+To plot points against attitude,initialize plot with data and aesthetic mapping. 
+
+To highling the distribution of the gender based on the attitide, use *col(gender)*.
 ```{r}
 p1 <- ggplot(lrn14, aes(x = attitude, y = points, col= gender))
+
+# define the visualization type (points)
 p2 <- p1 + geom_point()
+# draw the plot
 p2
+# add the regression line
+p3 <- p2 + geom_smooth(method = "lm")
+# draw the plot with 
+p3
+
+# add title and draw the plot
+p4 <- p3 + ggtitle("Student's attitude against exam points")
+p4
 ```
 
+# We can loodraw a scatter plot matrix of the variables in learning2014.
+```{r}
+# [-1] excludes the first column (gender)
+ pairs(lrn14[-1])
 
+# access the GGally and ggplot2 libraries
+library(GGally)
 
+# create a more advanced plot matrix with ggpairs()
+p <- ggpairs(lrn14, mapping = aes(), lower = list(combo = wrap("facethist", bins = 20)))
 
+# draw the plot
+p
+```
 
+```{r}
+# learning2014 is available
 
+# a scatter plot of points versus attitude
+library(ggplot2)
+qplot(attitude, points, data = lrn14) + geom_smooth(method = "lm")
 
+# fit a linear model
+my_model <- lm(points ~ attitude, data = lrn14)
 
+# print out a summary of the model
 
+summary(my_model)
+```
+```{r}
+# learning2014 is available
+
+# a scatter plot of points versus attitude
+library(ggplot2)
+qplot(attitude, points, data = lrn14) + geom_smooth(method = "lm")
+
+# fit a linear model
+my_model1 <- lm(points ~ stra, data = lrn14)
+
+# print out a summary of the model
+
+summary(my_model1)
+```
+```{r}
+# learning2014 is available
+
+# a scatter plot of points versus attitude
+library(ggplot2)
+qplot(attitude, points, data = lrn14) + geom_smooth(method = "lm")
+
+# fit a linear model
+my_model <- lm(points ~ surf, data = lrn14)
+
+# print out a summary of the model
+
+summary(my_model)
+```
+```{r}
+# learning2014 is available
+
+# a scatter plot of points versus attitude
+library(ggplot2)
+qplot(attitude, points, data = lrn14) + geom_smooth(method = "lm")
+
+# fit a linear model
+my_model2 <- lm(points ~ attitude+ stra+ surf, data = lrn14)
+
+# print out a summary of the model
+
+summary(my_model2)
+```
