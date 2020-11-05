@@ -43,49 +43,49 @@ dim(lrn14)
 ```
 
 
-3. We can also Visualization the data by creating graphics using *ggplots function* in R
+3. To visualise data, we can create graphics using *ggplots function*.
 
  Ggplot2 is an implementation of Leland Wilkinson's Grammar of Graphics which is popula for data  visualization.
-Install ggplots using *install.packages(ggplots2)*
+Install ggplots using *install.packages(ggplots2)* 
 
-Access the *gglot2* using library
+Access the *gglot2* in Rmarkdown using library
 ```{r}
 library(ggplot2)
 ```
 
-To plot points against attitude,initialize plot with data and aesthetic mapping. 
+To visualise points against the students attitude, initialize plot with data and aesthetic mapping. 
 
-To highling the distribution of the gender based on the attitide, use *col(gender)*.
+To highlight the distribution of the attitude based on gender, use *col(gender)*. This will assign different colors for each of the gender.
 ```{r}
+# initialize plot with data and aesthetic mapping
 p1 <- ggplot(lrn14, aes(x = attitude, y = points, col= gender))
 
 # define the visualization type (points)
 p2 <- p1 + geom_point()
-# draw the plot
+# draw the plot 
 p2
 # add the regression line
 p3 <- p2 + geom_smooth(method = "lm")
-# draw the plot with 
+# draw the plot 
 p3
-
 # add title and draw the plot
-p4 <- p3 + ggtitle("Student's attitude against exam points")
+p4 <- p3 + ggtitle("Student's attitude in relation to exam points")
 p4
 ```
 
-# We can loodraw a scatter plot matrix of the variables in learning2014.
+# Use scatter plot matrix of the variables in learning2014 to assess the distributions and correlations between the variables.
 ```{r}
 # [-1] excludes the first column (gender)
  pairs(lrn14[-1])
 
+```
 # access the GGally and ggplot2 libraries
+```{r}
 library(GGally)
-
 # create a more advanced plot matrix with ggpairs()
-p <- ggpairs(lrn14, mapping = aes(), lower = list(combo = wrap("facethist", bins = 20)))
-
-# draw the plot
-p
+p5 <- ggpairs(lrn14, mapping = aes(), lower = list(combo = wrap("facethist", bins = 20)))
+# plot 
+p5
 ```
 
 ```{r}
