@@ -46,7 +46,13 @@ learning2014 <- select(data, one_of(new_columns))
 # Change "gender into "Gender". To have all column names start with a capital
 colnames(learning2014)[1] = "Gender"
 
-# see the stucture of the new dataset
+# Exclude observations where the exam points variable is zero
+learning2014 <- filter(learning2014, Points > 0)
+
+# Look at the stucture of the new dataset
 str(learning2014)
+
+#Save the learning2014 dataset as .csv into the ‘data’ folder
+write.csv(learning2014, "learning2014.csv") 
 
 
