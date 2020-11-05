@@ -1,5 +1,6 @@
-# Sheila Wachiye
-# November 5 2020
+# Title : Data Wrangling
+# Author: Sheila Wachiye
+# Data :  November 5 2020
 
 # Introduction to Regerssion modelling and model validation
 
