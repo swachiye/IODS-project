@@ -97,10 +97,6 @@ summary(my_model)
 ```{r}
 # learning2014 is available
 
-# a scatter plot of points versus attitude
-library(ggplot2)
-qplot(attitude, points, data = lrn14) + geom_smooth(method = "lm")
-
 # fit a linear model
 my_model1 <- lm(points ~ stra, data = lrn14)
 
@@ -124,10 +120,6 @@ summary(my_model)
 ```
 ```{r}
 # learning2014 is available
-
-# a scatter plot of points versus attitude
-library(ggplot2)
-qplot(attitude, points, data = lrn14) + geom_smooth(method = "lm")
 
 # fit a linear model
 my_model2 <- lm(points ~ attitude+ stra+ surf, data = lrn14)
