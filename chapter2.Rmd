@@ -5,23 +5,24 @@ Author: Sheila Wachiye
 Date:   November 5 2020
 
 # *Introduction*
-**Regression?**
+
+**Regression**
 
 Regression is a statistical method used to assess the relationship between a dependent variable and one and more independent variables. The dependent variable can be seen as response variable while the independent variables as explanatory variables. 
 
-**Model validation?**
-According to wikipedia, a model validation is the task of confirming that the outputs of a statistical model have enough fidelity to the outputs of the data-generating process that the objectives of the investigation can be achieved.
+**Exercise**
 
 Regression analysis using RMarkdown include the following steps
 For this report, we will be using "learning2014" 
 
-View data using the following link
+View data using this link
+[](https://www.rstudio.com)http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/learning2014.txt)
 
-[Data](https://www.rstudio.com)http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/learning2014.txt)
+**Load data**
 
-**Load data into Rmarkdown**
+Load data by assigning a name. In this case we use "lrn14". 
 
-Load data by assigning a name. In this case we use "lrn14". Use *read.table* function, to read the file in a table format and creates a data frame. The separator is a comma "," and the file includes a header
+Use *read.table* function, to read the file in a table format and creates a data frame. The separator is a comma "," and the file includes a header
 
 ```{r}
 lrn14 <- read.table("http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/learning2014.txt", sep=",", header=TRUE)
@@ -29,101 +30,113 @@ lrn14 <- read.table("http://s3.amazonaws.com/assets.datacamp.com/production/cour
 
 
 **Visualise data **
-
-Data structure and dimensions 
-
 ```{r}
-# data structure
-#
+# data structure using str() 
+# str() function in is used for compactly display the internal structure of the dataframe
 str(lrn14)
+# It tells us about each variable one by ones below
  
-# data dimensions
+```
+```{r}
+# data dimensions dim() 
 # This gives you the number of rows and columns in the data frame
 dim(lrn14)
 ```
-Based on the above output
-We have 166 observaions which are the rows and 7 variables in the columns
+Based on the above output, we have 166 observaions (rows) and 7 variables (columns)
 
 ```{r}
-# Obtain the first several rows of a data frame using head
+# Access the first top six rows in the data frame using head() and the six bottom using tail()
 head(lrn14) 
+
+tail(lrn14) 
 
 # obtain the column names
 colnames(lrn14)
  
 ```
 
-Ceate graphics using *ggplots function*.
+Create graphics using *ggplots function*.
 
 Ggplot2 is an implementation of Leland Wilkinson's Grammar of Graphics which is popula for data  visualization.
 
-Access the *gglot2* in Rmarkdown using library
 ```{r}
+#Access the *gglot2* using library
 library(ggplot2)
 ```
 
+Plot Exams points against students attitude
 
-Plot Exams points against the students attitude
-
-To highlight the distribution of the attitude based on gender, use *col(gender)*. This will assign different colors for each of the gender.
 ```{r}
 # initialize plot with data and aesthetic mapping
+# ighlight the distribution of the attitude based on gender, use *col(gender)*. This will assign different colors for each of the gender.
 p1 <- ggplot(lrn14, aes(x = attitude, y = points, col= gender))
 
 # define the visualization type (points)
 p2 <- p1 + geom_point()
+
 # draw the plot 
 p2
+
 # add the regression line
 p3 <- p2 + geom_smooth(method = "lm")
+
 # draw the plot 
 p3
+
 # add title and draw the plot
 p4 <- p3 + ggtitle("Student's attitude in relation to exam points")
+
 p4
 ```
 
-Use scatter plot matrix of the variables in learning2014 to assess the distributions and correlations between the variables.
+Visualise the scatter plot matrix of the variables in *lrn14* to assess the distributions and correlations between the variables.
 ```{r}
-# [-1] excludes the first column (gender)
+# [-1] excludes the first column (gender). This because gender is not numerical
  pairs(lrn14[-1])
 
 ```
 
 ** Correlations between the variables in the dataframe**
 
-To assess the strengths and direction of correlation between the variables, create a more advanced plot matrix with *ggpairs()*. This matrix will give the correlation coefficient (R), which is a  measures of strength and direction of a relationship between two variables on a scatterplot. 
+Create a advanced plot matrix using *ggpairs()*. This matrix gives the correlation coefficient (R), the measures of strength and direction of a relationship between two variables on a scatterplot. 
 
-The value of R is lies between +1 (postive correlation) and –1( negative correlation). A positive correlation implies that the two variables under consideration vary in the same direction, i.e., if a variable increases the other one increases and if one decreases the other one decreases as well. A negative correlation means that the two variables under consideration vary in opposite directions, that is, if a variable increases the other decreases and vice versa.  
+The value of R lies between +1 (postive correlation) and –1( negative correlation).
+
+A positive correlation implies as one variable increases the other one increases and if one decreases the other one decreases as well. 
+
+A negative correlation means that the two variables under consideration vary in opposite directions, that is, if a variable increases the other decreases and vice versa.  
+
 The strenght of the correlations is how close the R is to +1 for a strong positive result or how close to -1 for a strong negative correlation. 
 
 However, a correlation close to 0 indicates no correlation and thus the two variables are independent.
+
 ```{r}
 # access GGally using library
 library(GGally)
 
-# create a more advanced plot matrix with ggpairs() ns
+# create a more advanced plot matrix with ggpairs()
 p5 <- ggpairs(lrn14, mapping = aes(), lower = list(combo = wrap("facethist", bins = 20)))
 
 # plot and take note of the correlations
 p5
+
 ```
 
 
-With Exam points as the target (dependent) variable. We note that Exams points is positively correlated to Attitude(R= 0.44) and strategic learning (R= 0.15) but negatively correlated to surface learning (R= 0.14)
+With Exam points as the target (dependent) variable.
 
-We select this three variable to include in our multiple regresion model
+We note that Exams points is positively correlated to Attitude(R= 0.44) and strategic learning (R= 0.15) but negatively correlated to surface learning (R= 0.14). Thus we include this in our multiple regresion model.
 
 **Multiple Regression**
 
 Multiple regression is a form of linear regression that permit predictions of the dependent variables with multiple independent variables i.e. the relationship between one dependent variable and two or more independent variables. This is done by basically adding more independent variables to the linear regression equation, with each term representing the impact of a different variable.
 
-Formula: Y = β~0~ + β1~1~X~1~ + β1~2~X~2~ + β1~3~X~3~ + ε.
+For our model with three independent variables we use the model below
+
+   Y = β~0~ + β1~1~X~1~ + β1~2~X~2~ + β1~3~X~3~ + ε.
 
 ```{r}
-# learning2014 is available
-
-# create a regression model with multiple explanatory variables (Note from the above matrix that shows correlation with Exam Points). Thus we have attutude, stra and surf
+# create a regression model with three explanatory variables (Note from the above matrix that shows correlation with Exam Points). Thus we have attutude, stra and surf
 
 Model_1 <- lm(points ~ attitude+ stra+ surf, data = lrn14)
 
@@ -142,7 +155,7 @@ P-value is the significance level of the t-test (p-value = 3.156e-08), shows tha
 
 However, individually, only attitude is significant (p-value = 1.93e-08) in explaning variation in exam points.
 
-Thus, we only include attitude in our model, simple linear regression
+Thus, we only include attitude in our simple linear regression below
 
 Formula: Y = β~0~ + β1~1~X~1~ + ε.
 
@@ -165,7 +178,7 @@ slope β1 = 3.5255,
 
 Therefore, the line of best fit is
 
-Points = 11.6372 + 3.5255 x Attitude
+Exam points = 11.6372 + 3.5255 x Attitude
 
 The R2 is 0.1906. 
 
