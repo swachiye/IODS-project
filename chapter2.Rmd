@@ -151,21 +151,19 @@ summary(Model_1)
 
 * Coefficients: Provide the weights that minimize the sum of the square of the errors.  
 
-P-value is the significance level of the t-test (p-value = 3.156e-08), shows that the overall models including attitude, strategic learning and surface learning is statistically signficant in explaining 21% of variations in exams points at confidence level of 95%
+P-value is the significance level of the t-test (p-value = 3.156e-08), shows that the overall models with three independent variable including attitude, strategic learning and surface learning is statistically signficant in explaining 21% of variations in exams points at confidence level of 95%
 
-However, individually, only attitude is significant (p-value = 1.93e-08) in explaning variation in exam points.
+However, individually, only attitude is statistically significant (p-value = 1.93e-08) in explaning the variation in exam points.
 
-Thus, we only include attitude in our simple linear regression below
+Thus, we only include attitude in our model below
 
 Formula: Y = β~0~ + β1~1~X~1~ + ε.
 
 ```{r}
-# Example
 # a scatter plot of Exam points versus attitude
 qplot(attitude, points, data = lrn14) + geom_smooth(method = "lm")
 
 # fit a linear model
-
 Model_2 <- lm(points ~ attitude, data = lrn14)
 
 # print out a summary of the model
@@ -180,9 +178,9 @@ Therefore, the line of best fit is
 
 Exam points = 11.6372 + 3.5255 x Attitude
 
-The R2 is 0.1906. 
+The R^2 is 0.1906. 
 
-R2 is a measure of the linear relationship between our predictor variable (Attitude) and our response (points). 
+The R^2 is a measure of the linear relationship between our predictor variable (Attitude) and our response (points). 
 
 P-value is the significance level of the t-test (p-value = 4.119e-09), thus based on the result, Attitude is statistically signficant in explaining 19% of variations in exams points at confidence level of 95%
 
@@ -204,7 +202,7 @@ The model assumptions for linear regression included:
 ```{r}
 # draw diagnostic plots using the plot() function. Choose the plots 1, 2 and 5
 par(mfrow = c(2,2)) # Create a 2 x 2 plotting matrix
-plot(Model_1, which= c(1, 2, 5))
+plot(Model_2, which= c(1, 2, 5))
 
 ```
 
