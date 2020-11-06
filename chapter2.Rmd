@@ -175,7 +175,19 @@ P-value is the significance level of the t-test (p-value = 4.119e-09), thus base
 
 
 **Diagnostic Plots**
-Diagnostic plots provide checks for homogeneity of variance, normality, and influential observerations.
+
+Regression diagnostics are used to evaluate the model assumptions.
+
+The model assumptions for linear regression included:
+
+1. Linearity: The relationship between independent variable and the mean of dependent variable is linear.
+
+2. Homoscedasticity: The variance of residual is the same for any value of independent variable.
+
+3. Independence: Observations are independent of each other.
+
+4. Normality: For any fixed value of the independent variable, the dependent variable is normally distributed.
+
 ```{r}
 # draw diagnostic plots using the plot() function. Choose the plots 1, 2 and 5
 par(mfrow = c(2,2)) # Create a 2 x 2 plotting matrix
@@ -184,12 +196,30 @@ plot(Model_1, which= c(1, 2, 5))
 ```
 
 
+1. Residuals vs Fitted
+
+This plot shows if residuals have non-linear patterns. 
+
+Residuals are measured as follows: residual =  observed y   –   model-predicted y
+
+Therefore, this plot is useful for checking the assumption of linearity and homoscedasticity. 
+
+ a. For the assumption of linearity, the residuals should not be too far away from 0.
+ 
+ b. For the homoscedasticity assumption, we should not have a pattern in the residuals and that they are equally spread around the y = 0 line.
+
+Based on this our plot, we can tell that the residual are even spread around the 0 line and no pattern can be seen. Therefore, our model  has met these assumption a good indication that we don’t have non-linear relationships.
+
+2. Normal Q-Q
+
+This plot shows if residuals are normally distributed. Therefore, we assess if the residuals follow a straight line well or deviate severely. 
+
+Our data observations lie quite well along the 45-degree line in the QQ-plot, so we may assume that normality holds here as much as it divert at the begining.
 
 
+3. Residuals vs Leverage
 
-
-
-
+This plot helps us to find the influence of an outlier in the linear model. This is because some outliers may shift the linear regression analysis. While some may have outliers, that might not be affect the regression line. This is the case with our results.
 
 
 
