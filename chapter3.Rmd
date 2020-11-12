@@ -1,0 +1,10 @@
+# **Logistic Regession**
+
+Author: Sheila Wachiye
+
+Date:   12/11/ 2020
+
+output: html_document
+
+# *Introduction*
+
