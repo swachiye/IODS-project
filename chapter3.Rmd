@@ -2,13 +2,13 @@
 
 Author: Sheila Wachiye
 
-Date:   12/11/ 2020
+Date:   12/11/2020
 
 output: html_document
 
 **Introduction**
 
-The data comprises combined student performance in Math course and Portuguese language course in secondary education of two Portuguese schools. This also is inclusive of their alcohol consumption rate during weekdays and weekends. This thus include both high use and low consumption use. 
+The data comprises combined student performance in Math course and Portuguese language course in secondary education of two Portuguese schools. This also is inclusive of their alcohol consumption rate during weekdays and weekends. This thus include both high and low consumption use. 
 
 
 **Load data **
@@ -55,7 +55,7 @@ gather(data) %>% ggplot(aes(value)) + facet_wrap("key", scales = "free") + geom_
 ```
 
 
-Assess relationship between and variable with alcohol consumption
+Assess relationships between and variable and alcohol consumption
 
 ```{r}
 #Exploring relationship of sex  with alcohol consumption
@@ -69,6 +69,7 @@ Compared to females, the percentage of males that have high use of alcohol is hi
 ```{r}
 # Exploring relationship of absences  with alcohol consumption using boxplot
 g1 <- ggplot(alc, aes(x = high_use, y = absences))
+
 # define the plot as a boxplot and draw it
 g1 + geom_boxplot() + ylab("absences") + ggtitle("Student absences by alcohol consumption")
 ```
@@ -76,14 +77,14 @@ g1 + geom_boxplot() + ylab("absences") + ggtitle("Student absences by alcohol co
 
 High alcohol use has an influences on the number of school absences 
 ```{r} 
-# Exploring relationship of parent status and alcohol consumption
+# Exploring relationship between parent status and alcohol consumption
 ggplot(data, aes(x=Pstatus, fill=high_use)) + geom_bar(position="fill")  + ggtitle("Alcohol consumption based on Parent status")
 ```
 
 Seems parents status has no influence on high alcohol use
 
 ```{r}
-# Exploring relationship of failure and alcohol consumption
+# Exploring relationship between past failure and alcohol consumption
 ggplot(data, aes(x=failures, fill=high_use)) + geom_bar(position="fill")  + ggtitle("Alcohol consumption based on past Failures")
 ```
 
@@ -104,6 +105,7 @@ CI <- confint(mod) %>% exp
 cbind(OR, CI)
 
 ```
+
 The probability of success for females is 0.016 vs that of males is 0.039 which is higher. It supports the hypothesis that males drink more
 CI for age contains 1 so it means the prob of success can be equal to prob of failure
 
@@ -117,15 +119,20 @@ data <- mutate(data, prediction = ifelse(probability>0.5, TRUE, FALSE))
 
 # tabulate the target variable versus the predictions
 table(high_use = data$high_use, prediction = data$prediction)
+
 #Plotting predictions
 ggplot(data, aes(x = probability, y = high_use, col = prediction)) + geom_point()
 table(high_use = data$high_use, prediction = data$prediction) %>% prop.table()
+
+# define a loss function (mean prediction error)
 loss_func <- function(class, prob) {
   n_wrong <- abs(class - prob) > 0.5
   mean(n_wrong)
 }
+
 # call loss_func to compute the average number of wrong predictions in the (training) data
 loss_func(class = data$high_use, prob = 0)
 
 ```
+
 The total proportion of inaccurately classified individuals (= the training error) is 0.29

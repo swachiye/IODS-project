@@ -451,7 +451,7 @@ summary {
 <pre class="r"><code># This is a so-called &quot;R chunk&quot; where you can write R code.
 
 date()</code></pre>
-<pre><code>## [1] &quot;Fri Nov 13 06:10:35 2020&quot;</code></pre>
+<pre><code>## [1] &quot;Fri Nov 13 06:15:06 2020&quot;</code></pre>
 <p>This is a good introduction to the course. I am really excited about this course and hope to learn alot as a start to my data science journey. I saw this coures on weboodi and was really interested.</p>
 <p>my link: <a href="https://github.com/swachiye/IODS-project" class="uri">https://github.com/swachiye/IODS-project</a></p>
 <hr />
@@ -832,7 +832,7 @@ CI &lt;- confint(mod) %&gt;% exp</code></pre>
 ## failures 1.4985442 1.11507734 2.0187650
 ## PstatusT 1.1109004 0.51492413 2.5474151</code></pre>
 <p>The probability of success for females is 0.016 vs that of males is 0.039 which is higher. It supports the hypothesis that males drink more CI for age contains 1 so it means the prob of success can be equal to prob of failure</p>
-<p>** Model validation***</p>
+<p><strong>Model validation</strong></p>
 <pre class="r"><code>mod_1 &lt;- glm(high_use ~ sex-1 + failures, data = data, family = &quot;binomial&quot;)
 probabilities &lt;- predict(mod_1, type = &quot;response&quot;)
 data &lt;- mutate(data, probability = probabilities)
