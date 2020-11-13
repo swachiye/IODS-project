@@ -107,7 +107,8 @@ cbind(OR, CI)
 The probability of success for females is 0.016 vs that of males is 0.039 which is higher. It supports the hypothesis that males drink more
 CI for age contains 1 so it means the prob of success can be equal to prob of failure
 
-** Model validation***
+**Model validation**
+
 ```{r}
 mod_1 <- glm(high_use ~ sex-1 + failures, data = data, family = "binomial")
 probabilities <- predict(mod_1, type = "response")
