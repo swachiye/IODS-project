@@ -10,13 +10,97 @@ output: html_document
 
 **Load data **
 
-The data comprises combined student performance in Math course and Portuguese language course in secondary education of two Portuguese schools. This also is inclusive of their alcohol consumption rate during weekdays and weekends with high use being consumption use both on weekdays and on the weekend 
+The data comprises combined student performance in Math course and Portuguese language course in secondary education of two Portuguese schools. This also is inclusive of their alcohol consumption rate during weekdays and weekends. This thus include both high use and low consumption use. 
 
 ```{r}
 alc <- read.table("http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/alc.txt", sep=",", header=TRUE)
 
+# Column names
 colnames(alc)
 
+# glimpse at the alc data
+glimpse(alc)
+
 ```
+To study the relationships between high/low alcohol consumption we select 4 variable that may relate with with supported hypothesis. The variable of interest is high_use. we can check whether there is relationship between sex, age, past failures and parents relationship status with alcohol use
+
+These are
+1 Sex: The males drink more than females
+2. Failures : To much drinking might affect your study time and this affect the perfomance. Those whose past failures exceed 3 drink more
+4. Absences: This can be brought about by hangovers after a heavy alcohol consumptions
+5. Parents relationship status : Those whose parents are apart drink more than those whose parents are together
+
+**Exploring the distribution of the variables**
+```{r}
+library(ggplot2)
+library(tidyr)
+data_1 <- data %>%
+  select(sex, absences, Pstatus, failures)
+gather(data_1) %>% ggplot(aes(value)) + facet_wrap("key", scales = "free") + geom_bar()
+# Exploring relationship with alcohol assumption
+ggplot(data, aes(x=sex, fill=high_use)) + geom_bar(position="fill")
+# Compared to females, the percentage of males that have high use of alcohol is higher
+ggplot(data, aes(x=absences, fill=high_use)) + geom_bar(position="fill")
+# 
+ggplot(data, aes(x=Pstatus, fill=high_use)) + geom_bar(position="fill")
+# Seems parents status has no influence on high alcohol use
+ggplot(data, aes(x=failures, fill=high_use)) + geom_bar(position="fill")
+# It seems alcohol use increases with no of failures
+```
+We can also look at the boxplot to assess the distribution of alcohol consumption against the variables
+```{r}
+
+# initialise a plot of high_use and the four variables
+# Sex
+# initialise a plot of high_use and absences
+g <- ggplot(alc, aes(x = high_use, y = sex))
+g + geom_boxplot() + ylab("absences") + ggtitle("Student absences by alcohol consumption and sex")
 
 
+# Absences
+g1 <- ggplot(alc, aes(x = high_use, y = absences))
+g1 + geom_boxplot() + ylab("absences") + ggtitle("Student absences by alcohol consumption")
+
+names(alc)
+
+# Pstatus
+g2 <- ggplot(alc, aes(x = high_use, y = Pstatus))
+g2 + geom_boxplot() + ylab("Pstatus") + ggtitle("Student absences by alcohol consumption")
+
+```
+Apply logistic regression to statistically explore the relationship between the variables
+```{r}
+#Question 5
+mod <- glm(high_use ~ sex-1 + age + failures + Pstatus, data = data, family = "binomial")
+summary(mod)
+# the coefficients for females and failures are the only ones that differ from zero(0). the others can be zeros.
+coef(mod)
+# getting odds and odds ratio
+OR <- coef(mod) %>% exp
+CI <- confint(mod) %>% exp
+cbind(OR, CI)
+
+```
+The probability of success for females is 0.016 vs that of males is 0.039 which is higher. It supports the hypothesis that males drink more
+CI for age contains 1 so it means the prob of success can be equal to prob of failure
+
+** Model validation***
+```{r}
+mod_1 <- glm(high_use ~ sex-1 + failures, data = data, family = "binomial")
+probabilities <- predict(mod_1, type = "response")
+data <- mutate(data, probability = probabilities)
+data <- mutate(data, prediction = ifelse(probability>0.5, TRUE, FALSE))
+
+# tabulate the target variable versus the predictions
+table(high_use = data$high_use, prediction = data$prediction)
+#Plotting predictions
+ggplot(data, aes(x = probability, y = high_use, col = prediction)) + geom_point()
+table(high_use = data$high_use, prediction = data$prediction) %>% prop.table()
+loss_func <- function(class, prob) {
+  n_wrong <- abs(class - prob) > 0.5
+  mean(n_wrong)
+}
+# call loss_func to compute the average number of wrong predictions in the (training) data
+loss_func(class = data$high_use, prob = 0)
+```
+The total proportion of inaccurately classified individuals (= the training error) is 0.29
