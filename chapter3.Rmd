@@ -1,12 +1,12 @@
-# **Logistic Regession**
+# **Logistic Regession and Model Validation**
 
 Author: Sheila Wachiye
 
-Date:   12/11/2020
+Date:   November 12, 2020
 
 output: html_document
 
-**Introduction**
+ **Introduction**
 
 The data comprises combined student performance in Math course and Portuguese language course in secondary education of two Portuguese schools. This also is inclusive of their alcohol consumption rate during weekdays and weekends. This thus include both high and low consumption use. 
 

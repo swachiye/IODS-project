@@ -413,10 +413,10 @@ summary {
 </div>
 
 
-<div id="logistic-regession" class="section level1">
-<h1><strong>Logistic Regession</strong></h1>
+<div id="logistic-regession-and-model-validation" class="section level1">
+<h1><strong>Logistic Regession and Model Validation</strong></h1>
 <p>Author: Sheila Wachiye</p>
-<p>Date: 12/11/2020</p>
+<p>Date: November 12, 2020</p>
 <p>output: html_document</p>
 <p><strong>Introduction</strong></p>
 <p>The data comprises combined student performance in Math course and Portuguese language course in secondary education of two Portuguese schools. This also is inclusive of their alcohol consumption rate during weekdays and weekends. This thus include both high and low consumption use.</p>
@@ -591,7 +591,8 @@ ggplot(data, aes(x = probability, y = high_use, col = prediction)) + geom_point(
 ## high_use      FALSE       TRUE
 ##    FALSE 0.68848168 0.01832461
 ##    TRUE  0.27486911 0.01832461</code></pre>
-<pre class="r"><code>loss_func &lt;- function(class, prob) {
+<pre class="r"><code># define a loss function (mean prediction error)
+loss_func &lt;- function(class, prob) {
   n_wrong &lt;- abs(class - prob) &gt; 0.5
   mean(n_wrong)
 }
