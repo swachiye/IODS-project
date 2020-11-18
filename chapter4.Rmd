@@ -318,4 +318,4 @@ library(factoextra)
 km$size
 fviz_cluster(km, data = boston_scaled)
 ```
-The first cluster is composed of 329 observations, while the second 177.
+The first cluster is composed of 177 observations, while the second 329.
