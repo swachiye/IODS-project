@@ -131,6 +131,9 @@ test_data
 # the dot means all other variables in the data.
 lda.fit <- lda(crime ~ ., data = train_data) 
 
+summary(lda.fit)
+
+
 # print the lda.fit object
 lda.fit 
 
@@ -158,5 +161,12 @@ plot(lda.fit, dimen = 2, col = classes, pch = classes)
 lda.arrows(lda.fit, myscale = 2)
 ```
 
+** Make predictions**
 
+```{r}
+# predict classes with test data
+lda.pred <- predict(lda.fit, newdata = test_data)
 
+# cross tabulate the results
+table(correct = correct_classes, predicted = lda.pred$class)
+```
