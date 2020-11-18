@@ -4,7 +4,9 @@ author: "Sheila"
 date: "18/11/2020"
 output: html_document
 ---
-
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
 **Load data **
 
 Boston dataset contains data about housing in the area of Boston Mass as collected by the U.S Census Service.
@@ -22,18 +24,14 @@ Assess the data
 # Explore Boston dataset structure and dimnesions
 str(Boston)
 dim(Boston)
+
+# Summary the dataset
+summary(Boston)
 ```
 The Boston dataset has 506 rows and 14 columns. 
 
 
-Summarize the dataset
-```{r}
-# Summary
-summary(Boston)
-```
-
-Check correlations between variables using correlation matrix plot:
-
+Correlations between variables using correlation matrix plot:
 ```{r}
 library(corrplot)
 library(tidyverse)
@@ -44,7 +42,7 @@ corr_matrix <- cor(Boston)%>% round(2)
 
 ```{r}
 # Set margin
-par(mar=c(2,1,1,1))
+par(mfrow = c(1,1))
 
 # visualize the correlation matrix
 corrplot(corr_matrix, method="circle", type = "upper", tl.cex = 1) %>% round(2)
@@ -143,7 +141,7 @@ The “proportion of trace” shown when you print *lda.fit* is the percentage s
 
 A good way of displaying the results of a linear discriminant analysis is to make a stacked histogram of the values of each discriminant function.
 
-This can be done using the “ldahist()” function in R. 
+This can be done using the *ldahist()* function in R. 
 
 ```{r}
 # LD1
