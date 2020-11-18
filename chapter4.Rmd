@@ -34,17 +34,24 @@ summary(Boston)
 pairs(Boston)
 
 ```
-
-
-
 Asses correlations between variables using correlation matrix plot:
 
 ```{r}
 library(corrplot)
 library(tidyverse)
 
+```
+
+```{r}
+# Set margin
+par(mar=c(1,1,1,1))
+
 # First calculate the correlation matrix 
 corr_matrix<-cor(Boston)%>% round(2)
+
+# Set margin
+par(mar=c(1,1,1,1))
+
 # visualize the correlation matrix
 corrplot(corr_matrix, method="circle", type = "upper", tl.cex = 1) %>% round(2)
 ```
