@@ -19,38 +19,32 @@ data("Boston")
 
 Assess the data
 ```{r}
-# explore Boston dataset structure and dimnesions
+# Explore Boston dataset structure and dimnesions
 str(Boston)
 dim(Boston)
 ```
 The Boston dataset has 506 rows and 14 columns. 
 
 
-Summarise the dataset
+Summarize the dataset
 ```{r}
+# Summary
 summary(Boston)
-
-# plot matrix of the variables
-pairs(Boston)
-
 ```
-Asses correlations between variables using correlation matrix plot:
+
+Check correlations between variables using correlation matrix plot:
 
 ```{r}
 library(corrplot)
 library(tidyverse)
 
+#  First calculate the correlation matrix 
+corr_matrix <- cor(Boston)%>% round(2)
 ```
 
 ```{r}
 # Set margin
-par(mar=c(1,1,1,1))
-
-# First calculate the correlation matrix 
-corr_matrix<-cor(Boston)%>% round(2)
-
-# Set margin
-par(mar=c(1,1,1,1))
+par(mar=c(2,1,1,1))
 
 # visualize the correlation matrix
 corrplot(corr_matrix, method="circle", type = "upper", tl.cex = 1) %>% round(2)
@@ -58,16 +52,15 @@ corrplot(corr_matrix, method="circle", type = "upper", tl.cex = 1) %>% round(2)
 
 Correlation Matrices
 
-Correlation of target variable crime with predictor variables:
 
 1. crim are highly correlated to rad, moderately to to indu, nox, age, tax, aptratio and Istat but negatively to zn, rm,dis and medv
 
-other correlations include 
 2. medv is positively correlated with black, dis, rm, chas, zn  medv and negatively correlated to indus, nox, age, rad, tax, ptratio, lstat 
+
 3. The highest positive correlations are between “rad” and “tax”, “indux” and “nox” and negative between “dis” and “age” and “dis” and “nox”.
 
 
-** Data standardization**
+**Data standardization **
 
 Boston data contains numerical values, thus we can use the function *scale()* to standardize the whole dataset.
 
@@ -224,7 +217,7 @@ Compute the model accuracy as follow:
 ```{r}
 sum(diag(tab))/sum(tab)
 ```
-It can be seen that, our model correctly classified 67% of observations.
+It can be seen that, our model correctly classified 75% of observations.
 
 
 
