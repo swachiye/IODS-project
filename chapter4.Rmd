@@ -4,6 +4,7 @@ author: "Sheila"
 date: "18/11/2020"
 output: html_document
 ---
+
 **Load data **
 
 Boston dataset contains data about housing in the area of Boston Mass as collected by the U.S Census Service.
@@ -15,6 +16,8 @@ library(MASS)
 data("Boston")
 ```
 
+
+Assess the data
 ```{r}
 # explore Boston dataset structure and dimnesions
 str(Boston)
@@ -22,7 +25,8 @@ dim(Boston)
 ```
 The Boston dataset has 506 rows and 14 columns. 
 
-The summary of the dataset
+
+Summarise the dataset
 ```{r}
 summary(Boston)
 
@@ -31,7 +35,9 @@ pairs(Boston)
 
 ```
 
-Check the correlations between variables using correlation matrix plot:
+
+
+Asses correlations between variables using correlation matrix plot:
 
 ```{r}
 library(corrplot)
@@ -39,26 +45,24 @@ library(tidyverse)
 
 # First calculate the correlation matrix 
 corr_matrix<-cor(Boston)%>% round(2)
-
-# print corr_matrix
-corr_matrix
-
 # visualize the correlation matrix
 corrplot(corr_matrix, method="circle", type = "upper", tl.cex = 1) %>% round(2)
 ```
 
 Correlation Matrices
-Correlation of target variable with predictor variables:
 
-1. crim are highly correlated to indu, nox, age, rad, and tax and Istat and negatively to zn, rm,dis and medv
-2. rm and lstat are highly correlated with the target variable medv
-3. black, dis, rm, chas, zn are positively correlated with medv
-4. crim, indus, nox, age, rad, tax, ptratio, lstat are negatively correlated with medv
+Correlation of target variable crime with predictor variables:
+
+1. crim are highly correlated to rad, moderately to to indu, nox, age, tax, aptratio and Istat but negatively to zn, rm,dis and medv
+
+other correlations include 
+2. medv is positively correlated with black, dis, rm, chas, zn  medv and negatively correlated to indus, nox, age, rad, tax, ptratio, lstat 
+3. The highest positive correlations are between “rad” and “tax”, “indux” and “nox” and negative between “dis” and “age” and “dis” and “nox”.
 
 
 ** Data standardization**
 
-The fact that Boston data contains only numerical values, we can use the function *scale()* to standardize the whole dataset.
+Boston data contains numerical values, thus we can use the function *scale()* to standardize the whole dataset.
 
 ```{r}
 # center and standardize variables using scale()
@@ -74,12 +78,11 @@ class(boston_scaled)
 boston_scaled <- as.data.frame(boston_scaled)
 ```
 
-Create a categorical variable of the crime rate in the Boston dataset (from the scaled crime rate).
+Create a categorical variable of the crime rate in the Boston dataset using the scaled crime rate.
 
 ```{r}
 # First create a quantile vector of crim 
 bins <- quantile(boston_scaled$crim)
-bins
 
 # create a categorical variable 'crime' into "low", "med_low", "med_high" and "high"
 crime <- cut(boston_scaled$crim, breaks = bins, include.lowest = TRUE, label=c("low", "med_low", "med_high", "high")) 
@@ -91,7 +94,7 @@ Drop the old crime rate variable from the dataset.
 
 ```{r}
 # remove original crim from the dataset
-boston_scaled <- dplyr::select(boston_scaled, -crim) %>% round(2)
+boston_scaled <- dplyr::select(boston_scaled, -crim) %>% round(2)# round it to 2 decimal places
 
 # add the new categorical value to scaled data
 boston_scaled <- data.frame(boston_scaled, crime)
@@ -101,7 +104,7 @@ boston_scaled
 ```
 
 
- Divide the dataset to train and test sets, so that 80% of the data belongs to the train set and 20% in the test dataset.
+Split the data into training and test set so that 80% of the data belongs to the train set and 20% in the test dataset.
  
 ```{r}
 # Get the number of rows in the Boston dataset and assign it as *n* 
@@ -129,6 +132,10 @@ lda.fit <- lda(crime ~ ., data = train_data)
 lda.fit 
 
 ```
+The Group means shows the mean of each variable in each group.
+
+Coefficients of linear discriminants provided the linear combination of predictor variables that are used to form the LDA
+
 The “proportion of trace” shown when you print *lda.fit* is the percentage separation achieved by each discriminant function. Thus, the percentage of classification achieved by the first discriminant function (LD1) is 96%, which is very high, While the second (3.3% ) and the third (1.1%) are very low
 
 
@@ -181,7 +188,6 @@ correct_classes <- test_data$crime
 
 # remove the crime variable from test data
 test_data <- dplyr::select(test_data, -crime)
-test_data
 ```
 
 
@@ -197,7 +203,13 @@ tab <- table(correct = correct_classes, predicted = lda.pred$class)
 tab
 ```
 Results of the 
-Under low, 16 were correctly classified
+Under low, 13 were correctly classified, while 9 are classified under med_low and 2 under med_high
+
+under med_low, 13 are correctly classified, while 4 are classified under med_high
+Med_high have 14 correctly classified
+high has all 30 correctly classified
+
+Overall we assess the model accuracy
 
 ** Model accuracy**
 
@@ -205,6 +217,10 @@ Compute the model accuracy as follow:
 ```{r}
 sum(diag(tab))/sum(tab)
 ```
+It can be seen that, our model correctly classified 67% of observations.
+
+
+
 ** Distance measures**
 ```{r}
 # load MASS and Boston
@@ -227,19 +243,20 @@ boston_scaled <- as.data.frame(boston_scaled)
 
 Calculate the distances between the observations. 
 ```{r}
-# euclidean distance matrix
+# euclidean distance matrix (the Euclidean method is the default one)
 dist_eu <- dist(boston_scaled)
 
 # look at the summary of the distances
 summary(dist_eu )
-
+```
+```{r}
 # manhattan distance matrix
 dist_man <- dist(boston_scaled, method="manhattan")
 
 # look at the summary of the distances
-
 summary(dist_man)
 ```
+
 Run k-means algorithm on the dataset. 
 
 ```{r}
@@ -279,17 +296,26 @@ Optimal number of clusters in Kmeans is when the value of total WCSS changes rad
 
 # k-means clustering
 km <-kmeans(boston_scaled, centers = 2)
-km
+
+# Store the cluster for each observation directly in the dataset as a column:
+
+boston_cluster <- data.frame(boston_scaled,
+  cluster = as.factor(km$cluster))
+head(boston_cluster)
 
 ```
 
 Visualize the clusters.
 
 ```{r}
-
 # plot the Boston dataset with clusters
 pairs(boston_scaled, col = km$cluster)
 
 ```
 
-
+```{r}
+library(factoextra)
+km$size
+fviz_cluster(km, data = boston_scaled)
+```
+The first cluster is composed of 329 observations, while the second 177.
