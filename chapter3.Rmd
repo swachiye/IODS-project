@@ -1,9 +1,10 @@
----
-title: "Logistic Regression"
-author: "Sheila Wachiye"
-date: "12/11/2020"
+# **Logistic Regession and Model Validation**
+
+Author: Sheila Wachiye
+
+Date:   November 12, 2020
+
 output: html_document
----
 
  **Introduction**
 
