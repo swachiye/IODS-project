@@ -16,11 +16,11 @@ data("Boston")
 ```
 
 ```{r}
-# explore Boston dataset
+# explore Boston dataset structure and dimnesions
 str(Boston)
 dim(Boston)
 ```
-The Boston dataset has has 506 rows and 14 columns. 
+The Boston dataset has 506 rows and 14 columns. 
 
 The summary of the dataset
 ```{r}
@@ -31,8 +31,7 @@ pairs(Boston)
 
 ```
 
-
-We can assess the correlations between variables with correlation matrix plot:
+Check the correlations between variables using correlation matrix plot:
 
 ```{r}
 library(corrplot)
@@ -80,10 +79,11 @@ Create a categorical variable of the crime rate in the Boston dataset (from the 
 ```{r}
 # First create a quantile vector of crim 
 bins <- quantile(boston_scaled$crim)
+bins
 
-
-# create a categorical variable 'crime'
+# create a categorical variable 'crime' into "low", "med_low", "med_high" and "high"
 crime <- cut(boston_scaled$crim, breaks = bins, include.lowest = TRUE, label=c("low", "med_low", "med_high", "high")) 
+
 ```
 
 
@@ -101,7 +101,8 @@ boston_scaled
 ```
 
 
- Divide the dataset to train and test sets, so that 80% of the data belongs to the train set.
+ Divide the dataset to train and test sets, so that 80% of the data belongs to the train set and 20% in the test dataset.
+ 
 ```{r}
 # Get the number of rows in the Boston dataset and assign it as *n* 
 n <- nrow(boston_scaled)
@@ -112,14 +113,14 @@ ind <- sample(n,  size = n * 0.8)
 # Use the selected to create train set
 train_data <- boston_scaled[ind,]
 train_data
-# create test set 
+# create test set using the remaining rows
 test_data  <- boston_scaled[-ind,]
-
+test_data
 # save the correct classes from test data
 correct_classes <- test_data$crime
 
 # remove the crime variable from test data
-test_data <- dplyr::select(test, -crime)
+test_data <- dplyr::select(test_data, -crime)
 test_data
 ```
 
@@ -138,9 +139,9 @@ summary(lda.fit)
 lda.fit 
 
 ```
+The percentage of classification achieved by the first discriminant function (LD1) is 96%, which is very high,While the second and the third are very low
 
-
-Draw the LDA (bi)plot.
+Draw the LDA (bi)plot,
 
 ```{r}
 # the function for lda biplot arrows
@@ -154,12 +155,15 @@ lda.arrows <- function(x, myscale = 1, arrow_heads = 0.1, color = "red", tex = 0
 }
 
 # target classes as numeric
-classes <- as.numeric(train$crime)
+classes <- as.numeric(train_data$crime)
 
 # plot the lda results
 plot(lda.fit, dimen = 2, col = classes, pch = classes)
 lda.arrows(lda.fit, myscale = 2)
 ```
+Save the crime categories from the test set and then remove the categorical crime variable from the test dataset.
+
+
 
 ** Make predictions**
 
@@ -170,3 +174,15 @@ lda.pred <- predict(lda.fit, newdata = test_data)
 # cross tabulate the results
 table(correct = correct_classes, predicted = lda.pred$class)
 ```
+** Model accuracy**
+
+You can compute the model accuracy as follow:
+```{r}
+
+mean(lda.pred$class==test_data$crime) 
+```
+
+
+
+
+
