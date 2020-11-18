@@ -55,3 +55,43 @@ Correlation of target variable with predictor variables:
 2. rm and lstat are highly correlated with the target variable medv
 3. black, dis, rm, chas, zn are positively correlated with medv
 4. crim, indus, nox, age, rad, tax, ptratio, lstat are negatively correlated with medv
+
+
+** Data standardization**
+
+The fact that Boston data contains only numerical values, we can use the function *scale()* to standardize the whole dataset.
+
+```{r}
+# center and standardize variables using scale()
+boston_scaled <- scale(Boston)
+
+# summaries of the scaled variables
+summary(boston_scaled)
+
+# check the class of the boston_scaled object
+class(boston_scaled)
+
+# change the object to data frame
+boston_scaled <- as.data.frame(boston_scaled)
+```
+
+Create a categorical variable of the crime rate in the Boston dataset (from the scaled crime rate).
+
+```{r}
+# First create a quantile vector of crim 
+bins <- quantile(boston_scaled$crim)
+
+
+# create a categorical variable 'crime'
+crime <- cut(boston_scaled$crim, breaks = bins, include.lowest = TRUE, label=c("low", "med_low", "med_high", "high")) 
+
+
+# remove original crim from the dataset
+boston_scaled <- dplyr::select(boston_scaled, -crim) %>% round(2)
+
+# add the new categorical value to scaled data
+boston_scaled <- data.frame(boston_scaled, crime)
+
+#print
+boston_scaled 
+```
