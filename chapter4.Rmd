@@ -112,16 +112,15 @@ ind <- sample(n,  size = n * 0.8)
 
 # Use the selected to create train set
 train_data <- boston_scaled[ind,]
-train_data
+
 # create test set using the remaining rows
 test_data  <- boston_scaled[-ind,]
-test_data
+
 # save the correct classes from test data
 correct_classes <- test_data$crime
 
 # remove the crime variable from test data
 test_data <- dplyr::select(test_data, -crime)
-test_data
 ```
 
 **Linear Discriminant analysis**
@@ -131,18 +130,35 @@ test_data
 # linear discriminant analysis
 # the dot means all other variables in the data.
 lda.fit <- lda(crime ~ ., data = train_data) 
-
-summary(lda.fit)
-
-
 # print the lda.fit object
 lda.fit 
 
 ```
-The percentage of classification achieved by the first discriminant function (LD1) is 96%, which is very high,While the second and the third are very low
+The “proportion of trace” shown when you print *lda.fit* is the percentage separation achieved by each discriminant function. Thus, the percentage of classification achieved by the first discriminant function (LD1) is 96%, which is very high, While the second (3.3% ) and the third (1.1%) are very low
 
-Draw the LDA (bi)plot,
 
+**Histogram of the LDA Values**
+
+A good way of displaying the results of a linear discriminant analysis is to make a histogram of the values of each discriminant function.
+
+This can be done using the “ldahist()” function in R. 
+
+```{r}
+# LD1
+lda.fit.values <- predict(lda.fit)
+ldahist(data = lda.fit.values$x[,1], g=train_data$crime)
+
+# LD2
+lda.fit.values <- predict(lda.fit)
+ldahist(data = lda.fit.values$x[,2], g=train_data$crime)
+
+# LD3
+lda.fit.values <- predict(lda.fit)
+ldahist(data = lda.fit.values$x[,3], g=train_data$crime)
+```
+With the first discriminant, we get a clean separation between the classess. However, in second and third discriminant we have overlap between the classess.
+
+**Draw the LDA (bi)plot**
 ```{r}
 # the function for lda biplot arrows
 lda.arrows <- function(x, myscale = 1, arrow_heads = 0.1, color = "red", tex = 0.75, choices = c(1,2)){
@@ -163,6 +179,9 @@ lda.arrows(lda.fit, myscale = 2)
 ```
 Save the crime categories from the test set and then remove the categorical crime variable from the test dataset.
 
+```{r}
+
+```
 
 
 ** Make predictions**
@@ -174,6 +193,9 @@ lda.pred <- predict(lda.fit, newdata = test_data)
 # cross tabulate the results
 table(correct = correct_classes, predicted = lda.pred$class)
 ```
+Results of the 
+Under low, 16 were correctly classified
+
 ** Model accuracy**
 
 You can compute the model accuracy as follow:
