@@ -127,13 +127,6 @@ Coefficients of linear discriminants provided the linear combination of predicto
 The “proportion of trace” shown when you print *lda.fit* is the percentage separation achieved by each discriminant function. Thus, the percentage of classification achieved by the first discriminant function (LD1) is 96%, which is very high, While the second (3.3% ) and the third (1.1%) are very low
 
 
-**Histogram of the LDA Values**
-
-A good way of displaying the results of a linear discriminant analysis is to make a stacked histogram of the values of each discriminant function.
-
-
-With the first discriminant, we get a clean separation between the classes. However, in second and third discriminant we have overlap between the classes.
-
 **Draw the LDA (bi)plot**
 ```{r}
 # the function for lda biplot arrows
@@ -191,7 +184,7 @@ Compute the model accuracy as follow:
 ```{r}
 sum(diag(tab))/sum(tab)
 ```
-It can be seen that, our model correctly classified 75% of observations.
+The model correctly classified 68% of observations.
 
 
 
@@ -243,7 +236,7 @@ pairs(boston_scaled, col = km$cluster)
 ```
 
 
-Investigate what is the optimal number of clusters and run the algorithm again.
+Investigate the optimal number of clusters and run the algorithm again.
 
 ```{r}
 # K-means might produce different results every time thus use function set.seed() to avoid this.
