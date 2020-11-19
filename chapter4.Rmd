@@ -1,12 +1,5 @@
----
-title: "Clustering and classification"
-author: "Sheila"
-date: "18/11/2020"
-output: html_document
----
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+**Clustering and classification**
+
 **Load data **
 
 Boston dataset contains data about housing in the area of Boston Mass as collected by the U.S Census Service.
@@ -35,6 +28,9 @@ Correlations between variables using correlation matrix plot:
 ```{r}
 library(corrplot)
 library(tidyverse)
+
+#  First calculate the correlation matrix 
+corr_matrix <- cor(Boston)%>% round(2)
 ```
 
 ```{r}
@@ -277,9 +273,6 @@ twcss <- sapply(1:k_max, function(k){kmeans(boston_scaled, k)$tot.withinss})
 # visualize the results
 qplot(x = 1:k_max, y = twcss, geom = 'line')
 
-# plot the Boston dataset with clusters
-pairs(boston_scaled, col = km$cluster)
-
 ```
 
 Optimal number of clusters in Kmeans is when the value of total WCSS changes radically and in this case we see the optimal number as 2
@@ -294,7 +287,6 @@ km <-kmeans(boston_scaled, centers = 2)
 
 boston_cluster <- data.frame(boston_scaled,
   cluster = as.factor(km$cluster))
-head(boston_cluster)
 
 ```
 
