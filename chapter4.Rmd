@@ -97,8 +97,6 @@ boston_scaled <- dplyr::select(boston_scaled, -crim) %>% round(2)# round it to 2
 # add the new categorical value to scaled data
 boston_scaled <- data.frame(boston_scaled, crime)
 
-#print
-boston_scaled 
 ```
 
 
