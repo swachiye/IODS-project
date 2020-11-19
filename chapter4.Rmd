@@ -131,21 +131,7 @@ The “proportion of trace” shown when you print *lda.fit* is the percentage s
 
 A good way of displaying the results of a linear discriminant analysis is to make a stacked histogram of the values of each discriminant function.
 
-This can be done using the *ldahist()* function in R. 
 
-```{r}
-# LD1
-lda.fit.values <- predict(lda.fit)
-ldahist(data = lda.fit.values$x[,1], g=train_data$crime)
-
-# LD2
-lda.fit.values <- predict(lda.fit)
-ldahist(data = lda.fit.values$x[,2], g=train_data$crime)
-
-# LD3
-lda.fit.values <- predict(lda.fit)
-ldahist(data = lda.fit.values$x[,3], g=train_data$crime)
-```
 With the first discriminant, we get a clean separation between the classes. However, in second and third discriminant we have overlap between the classes.
 
 **Draw the LDA (bi)plot**
