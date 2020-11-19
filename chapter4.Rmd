@@ -31,9 +31,6 @@ library(tidyverse)
 
 #  First calculate the correlation matrix 
 corr_matrix <- cor(Boston)%>% round(2)
-```
-
-```{r}
 # Set margin
 par(mfrow = c(1,1))
 
@@ -56,6 +53,7 @@ Correlation Matrices
 Boston data contains numerical values, thus we can use the function *scale()* to standardize the whole dataset.
 
 ```{r}
+
 # center and standardize variables using scale()
 boston_scaled <- scale(Boston)
 
@@ -67,6 +65,7 @@ class(boston_scaled)
 
 # change the object to data frame
 boston_scaled <- as.data.frame(boston_scaled)
+
 ```
 
 Create a categorical variable of the crime rate in the Boston dataset using the scaled crime rate.
