@@ -1,10 +1,5 @@
----
-title: "chapter5.Rmd"
-author: "Sheila"
-date: "25/11/2020"
-output: html_document
----
 
+#**Principal Component Analysis **
 ```{r}
 human <- read.table("http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/human2.txt", sep=",", header=TRUE)
 
@@ -23,6 +18,7 @@ str(human)
 
 # Dimension
 dim(human)
+head(human)
 
 ```
 
@@ -49,6 +45,8 @@ library(GGally)
 ggpairs(human)
 
 ```
+
+
 The diagonal plots give the density plot. The scale of the y axis is printed on the left side of the matrix and x axis is at the bottom of the matrix. 
 
 The upper part of the density plot gives the pearson’s correlation coefficient of determination (R2) showing positive and negative (-) correlations between the variable in the human development Index. 
@@ -70,21 +68,25 @@ cor(human) %>% corrplot
 ```
 
 
-Principal Component Analysis (PCA) 
 
-Unstandardise data
+**Principal Component Analysis (PCA) **
+
+Principal Component Analysis a method used to reduce the dimensionality of large data sets into a smaller one that still contains most of the information in the large set.
+
+The number of PCs is equal to the number of original variables and for our case we have eight (8).
+
+The aim is to keep only the PCs that explain the most variance of our data to make the interpretation easier.
+
+
+**PCA on Unstandardise data**
 ```{r}
 # perform principal component analysis (with the SVD method)
-pca_human1 <- prcomp(human, scale = TRUE)
+pca_human1 <- prcomp(human)
 summary(pca_human1)
 
 # draw a biplot of the principal component representation and the original variables
 biplot(pca_human1, choices = 1:2, cex = c(0.8, 1),col = c("grey30", "red"))
 ```
-The first principal components account for 53.6% of the total variance and the second 16.2%
-
-
-We can plot the eigenvalues to visualize the proportion of variance explained by each each principal component.
 
 ```{r}
 
@@ -92,19 +94,28 @@ We can plot the eigenvalues to visualize the proportion of variance explained by
 library(factoextra)
 
 #Visualize eigenvalues 
-
 fviz_eig(pca_human1)
 
 
-# Anothe way to draw a biplot of the principal component
+# Another way to draw a biplot of the principal component
 # Gives percentage variance of PC1 on the x axis and PC2 on the y axis
 fviz_pca_biplot(pca_human1, repel = TRUE, col.var = "#2E8FDF", # Variables color
                 col.ind = "#696959"  # Individuals color
                 )
+
+eig.val <- get_eigenvalue(pca_human1)
+eig.val
 ```
 
+Standardization is a advisable for data transformation especially because the variables in original dataset have different scale or different units. 
 
-Standardised data
+The standardized variables will therefore be unitless and have a similar variance.
+
+This is necessary to eliminate biases in the original variables. 
+
+
+
+**PCA on Standardise data**
 
 ```{r}
 # standardize the variables
@@ -112,21 +123,38 @@ human_std <- scale(human)
 
 # perform principal component analysis (with the SVD method)
 pca_human2 <- prcomp(human_std)
+
+#The summary shows outputs the proportion of variance explained by the components.
 summary(pca_human2)
-
-# draw a biplot of the principal component representation and the original variables
-biplot(pca_human2, choices = 1:2, cex = c(0.8, 1),col = c("grey30", "red"))
-
-
-```
-```{r}
 
 # Access the factoextra 
 library(factoextra)
 
-#Visualize eigenvalues 
+#Get eigenvalues to determine the number of principal components to be considered.
+eig.val <- get_eigenvalue(pca_human2)
+eig.val
+
+#Visualize eigenvalues
+#Scree plot,
 
 fviz_eig(pca_human2)
+
+```
+The PCA results for standardised data are are different from unstandardized data.
+
+PCA on standardised data are easier to interprete and see the cooreltion as compared to unstandardised data.
+
+Based on these results
+
+The PC1 account for 53.6% of the total variance and the PC2 16.2%. Thus PC1 and PC2 contributes about 69% of the total variation in the dataset and have eigenvalues > 1 
+This mean, PC1 and PC2 provides a good approximation of the variation present in the original human dataset that has 8 variable.
+
+
+```{r}
+
+# draw a biplot of the principal component representation and the original variables
+biplot(pca_human2, choices = 1:2, cex = c(0.8, 1), col = c("grey30", "red"))
+
 
 
 # Anothe way to draw a biplot of the principal component
@@ -135,4 +163,7 @@ fviz_pca_biplot(pca_human2, repel = TRUE, col.var = "#2E5FDF", # Variables color
                 col.ind = "#696959"  # Individuals color
                 )
 ```
-                    
+
+From the biplot, 
+we can see the variables D and E are highly associated and forms cluster (gene expression response in D and E conditions are highly similar). Similarly, A and B are highly associated and forms another cluster (gene expression response in A and B conditions are highly similar but different from other clusters). If the variables are highly associated, the angle between the variable vectors should be as small as possible in the biplot.
+
