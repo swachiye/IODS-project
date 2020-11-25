@@ -151,9 +151,20 @@ This mean, PC1 and PC2 provides a good approximation of the variation present in
 
 
 ```{r}
+# create and print out a summary of pca_human
+s <- summary(pca_human)
+
+# rounded percentages of variance captured by each PC
+pca_pr <- round(100*s$importance[2,], digits = 1) 
+
+# print out the percentages of variance
+pca_pr
+
+# create object pc_lab to be used as axis labels
+pc_lab <- paste0(names(pca_pr), " (", pca_pr, "%)")
 
 # draw a biplot of the principal component representation and the original variables
-biplot(pca_human2, choices = 1:2, cex = c(0.8, 1), col = c("grey30", "red"))
+biplot(pca_human2, cex = c(0.8, 1), col = c("grey40", "red"), xlab = pc_lab[1], ylab = pc_lab[2])
 
 
 
@@ -167,3 +178,17 @@ fviz_pca_biplot(pca_human2, repel = TRUE, col.var = "#2E5FDF", # Variables color
 From the biplot, 
 we can see the variables D and E are highly associated and forms cluster (gene expression response in D and E conditions are highly similar). Similarly, A and B are highly associated and forms another cluster (gene expression response in A and B conditions are highly similar but different from other clusters). If the variables are highly associated, the angle between the variable vectors should be as small as possible in the biplot.
 
+
+
+**PCA on Standardise data**
+```{r}
+# Import data 
+
+library(FactoMineR)
+
+tea <- read.table("data_MCA_Tea.csv", header=TRUE, sep=";")
+summary(tea)
+
+# Loading FactoMineR
+library(FactoMineR)
+```{r}
