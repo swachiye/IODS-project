@@ -152,7 +152,7 @@ This mean, PC1 and PC2 provides a good approximation of the variation present in
 
 ```{r}
 # create and print out a summary of pca_human
-s <- summary(pca_human)
+s <- summary(pca_human2)
 
 # rounded percentages of variance captured by each PC
 pca_pr <- round(100*s$importance[2,], digits = 1) 
