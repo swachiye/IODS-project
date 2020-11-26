@@ -183,12 +183,50 @@ we can see the variables D and E are highly associated and forms cluster (gene e
 **PCA on Standardise data**
 ```{r}
 # Import data 
-
-library(FactoMineR)
-
-tea <- read.table("data_MCA_Tea.csv", header=TRUE, sep=";")
-summary(tea)
-
 # Loading FactoMineR
 library(FactoMineR)
+library (ggplot2)
+library(dplyr)
+library(tidyr) 
+
+#Load Tea data
+data(tea)
+
+# the structure and 
+str(tea)
+
+#the dimensions 
+dim(tea)
+
+```
+
+
 ```{r}
+# visualize the dataset
+
+gather(tea) %>% ggplot(aes(value)) + facet_wrap("key", scales = "free") + geom_bar() + theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 8))
+
+```
+
+```{r}
+# MCA with the graphs given by default
+mca <- MCA(tea, quanti.sup=19, quali.sup=c(20:36))
+summary(mca, ncp=3, nbelements=Inf)    ## fonction summary.MCA
+
+
+# decription of the dimensions
+dimdesc(mca)
+```
+
+```{r}
+# tea_time is available
+
+# multiple correspondence analysis
+mca <- MCA(tea, graph = FALSE)
+
+# summary of the model
+
+
+# visualize MCA
+plot("change me!", invisible=c("ind"))
+```
