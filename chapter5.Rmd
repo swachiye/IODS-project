@@ -274,7 +274,7 @@ If sugar is used or not
 Where- where the tea is bought either the supermarket, shops, both)
 
 
-
+Additional plots
 ```{r}
 
 plot.MCA(mca, invisible=c("var","quali.sup"), cex=0.8)
