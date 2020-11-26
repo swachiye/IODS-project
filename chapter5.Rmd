@@ -207,7 +207,7 @@ We consider the following columns to answer the following:
 
 The kind of tea taken
 How the tea is taken (alone, w/milk, w/lemon, other)
-How the tea is used either tea bags, loose tea or both
+Form of tea used either tea bags, loose tea or both
 If sugar is used or not
 Where the tea is bought either the supermarket, shops, both)
 
@@ -219,7 +219,8 @@ new_tea = tea[, c("Tea", "How", "how", "sugar", "where")]
 head(new_tea)
 ```
 
-Perform MCA is only on the active individuals/variables
+Perform MCA 
+
 ```{r}
 # apply MCA
 mca = MCA(new_tea, graph = FALSE)
@@ -252,8 +253,30 @@ head(mca$ind$coord)
 The results displays the coordinates of each variable categories in each dimension
 
 
+To visualize the correlation between variables and MCA principal dimensions
+```{r}
+# row coordinates
+fviz_mca_var(mca, choice = "mca.cor", 
+            repel = TRUE, # Avoid text overlapping (slow)
+            ggtheme = theme_minimal())
+```
+
+The plot above helps to assess the variables that are the most correlated with each of the dimension. 
+The squared correlations between variables and the dimensions are used as coordinates.
+
+It can be seen that, the variables "where" and "how" are both correlated to both dimension 1 and 2.
+"How" is more correlated with dimension 2.
+
+Note
+How- how the tea is taken (alone, w/milk, w/lemon, other)
+how- Form of tea used either tea bags, loose tea or both
+If sugar is used or not
+Where- where the tea is bought either the supermarket, shops, both)
+
+
+
 ```{r}
 
-plot.MCA(mca, invisible=c("var","quali.sup"), cex=0.7)
-plot.MCA(mca, invisible=c("ind","quali.sup"), cex=0.7)
+plot.MCA(mca, invisible=c("var","quali.sup"), cex=0.8)
+plot.MCA(mca, invisible=c("ind","quali.sup"), cex=0.8)
 ```
