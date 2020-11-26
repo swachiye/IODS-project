@@ -201,17 +201,59 @@ dim(tea)
 ```
 
 
-```{r}
-# visualize the dataset
+Tes sata is data frame (of factors) containing the answers of a questionnaire on tea consumption 300 individuals.
 
-gather(tea) %>% ggplot(aes(value)) + facet_wrap("key", scales = "free") + geom_bar() + theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 8))
+We consider the following columns to answer the following:
+
+The kind of tea taken
+How the tea is taken (alone, w/milk, w/lemon, other)
+How the tea is used either tea bags, loose tea or both
+If sugar is used or not
+Where the tea is bought either the supermarket, shops, both)
+
+
+```{r}
+# select columns of interest
+new_tea = tea[, c("Tea", "How", "how", "sugar", "where")]
+# take a look
+head(new_tea)
+```
+
+Perform MCA is only on the active individuals/variables
+```{r}
+# apply MCA
+mca = MCA(new_tea, graph = FALSE)
+```
+
+
+Visualization and interpretation
+
+
+```{r}
+# table of eigenvalues
+mca$eig
+
+# Plot the eigenvalues
+fviz_screeplot(mca, addlabels = TRUE, ylim = c(0, 45))
 
 ```
 
+
 ```{r}
-# MCA with the graphs given by default
-mca <- MCA(tea, quanti.sup=19, quali.sup=c(20:36))
+# column coordinates
+head(mca$var$coord)
 
 ```
+```{r}
+# row coordinates
+head(mca$ind$coord)
+
+```
+The results displays the coordinates of each variable categories in each dimension
 
 
+```{r}
+
+plot.MCA(mca, invisible=c("var","quali.sup"), cex=0.7)
+plot.MCA(mca, invisible=c("ind","quali.sup"), cex=0.7)
+```
