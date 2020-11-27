@@ -1,4 +1,4 @@
-# **Logistic Regession and Model Validation**
+ **Logistic Regession and Model Validation**
 
 Author: Sheila Wachiye
 

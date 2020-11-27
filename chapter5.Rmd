@@ -201,7 +201,7 @@ dim(tea)
 ```
 
 
-Tes sata is data frame (of factors) containing the answers of a questionnaire on tea consumption 300 individuals.
+The data is contain the answers of a questionnaire on tea consumption 300 individuals.
 
 We consider the following columns to answer the following:
 
