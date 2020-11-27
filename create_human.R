@@ -1,43 +1,50 @@
-## Setting up the scene and loading the packages
-rm(list=ls())
-library(readxl)
-library(base)
-library(plyr)
+# Description of 'human' dataset variables. 
+# Original data can be accessed from: http://hdr.undp.org/en/content/human-development-index-hdi
+# Retrieved, modified and analyzed by Sheila Wachiye 26/11/2020
+# The 'human' dataset used in this study is from the United Nations Development Programme Human Development Index (HDI)
+
+# Load necessary package
+library(stringr)
 library(dplyr)
 
-## Loading Human development data
-hd <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/human_development.csv", 
-               stringsAsFactors = F)
-# Exploring  the data structure and dimension
-str(hd)
-dim(hd)
-summary(hd)
+# Load the huma data
+human <- read.table("http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/human1.txt", sep  =",", header = T)
 
+# look at the (column) names of human
+names(human)
 
-## Loading the Gender inequality data
-gii <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/gender_inequality.csv", 
-                stringsAsFactors = F, na.strings = "..")
-# Exploring the gender data structure and dimension
-str(gii)
-dim(gii)
-head(gii)
-summary(gii)
+# the structure of data
+str(human)
 
+# print out summaries the data
+summary(human)
 
-## Simplifying the column names
-colnames(hd) <- c("Rank", "Country", "HDI", "LEAB", "EYE", "MYE", "GNI", "GNI-HDI") 
-colnames(gii) <- c("Rank", "Country", "GII", "MMR", "ABR", "PRP", "edu2F", "edu2M", "labF", "labM") 
+# Mutate data
+mutate(human, displ_l = disp / 61.0237)
 
+# look at the structure of the GNI column in 'human'
+str(human$GNI)
 
-## Mutate the Gender inequality data to create two new variables. 
-# Ratio of Female and Male populations with secondary education in each country
-gii <- mutate(gii, edu_ration=  edu2F / edu2M)
-# Ratio of labour force participation of females and males in each country
-gii <- mutate(gii, lab_ration=  labF / labM)
+# remove the commas from GNI and print out a numeric version of it
+str_replace(human$GNI, pattern=",", replace ="")%>% as.numeric(human$GNI)
 
+# columns to keep
+keep <- c("Country", "Edu2.FM", "Labo.FM", "Edu.Exp", "Life.Exp", "GNI", "Mat.Mor", "Ado.Birth", "Parli.F" )
 
-## Join together the two datasets using the variable Country 
-human <- inner_join(gii, hd, by="Country")
+# select the 'keep' columns
+human <- select(human, one_of(keep))
 
-## Confirming that the dimension of human dataframe is 195 rows and 19 variables
-dim(human)
+# print out a completeness indicator of the 'human' data
+complete.cases(human)
+
+# print out the data along with a completeness indicator as the last column
+data.frame(human[-1], comp = complete.cases(human))
+
+# filter out all rows with NA values
+human1 <- filter(human, complete.cases(human))
+head(human_)
+
+# remove the Country variable
+human1 <- select(human1, -Country)
+head(human1)
+dim(human1)
