@@ -1,50 +1,34 @@
-# Description of 'human' dataset variables. 
-# Original data can be accessed from: http://hdr.undp.org/en/content/human-development-index-hdi
-# Retrieved, modified and analyzed by Sheila Wachiye 26/11/2020
-# The 'human' dataset used in this study is from the United Nations Development Programme Human Development Index (HDI)
+## Sheila Aswani Wachiye
+## 'human' dataset originally from the United Nations Development Programme.
+## More info visit http://hdr.undp.org/en/content/human-development-index-hdi
 
-# Load necessary package
-library(stringr)
+## Setting up the scene and loading the packages
+rm(list=ls())
+library(readxl)
+library(base)
 library(dplyr)
 
-# Load the huma data
-human <- read.table("http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/human1.txt", sep  =",", header = T)
-
-# look at the (column) names of human
-names(human)
-
-# the structure of data
+## Loading data
+human <- read.table("http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/human1.txt", header=T, sep=",")
 str(human)
+dim(human)
 
-# print out summaries the data
-summary(human)
+## mutating GNI
+library(stringr)
+human$GNI <- as.numeric(str_replace(human$GNI, pattern=",", replace =""))
 
-# Mutate data and remove the commas from GNI and print out a numeric version of it
-human <- mutate(human, GNI =str_replace(human$GNI, pattern=",", replace ="")%>% as.numeric(human$GNI))
-names(human)
-head(human)
+#Excluding some variables
+keep <- c("Country", "Edu2.FM", "Labo.FM", "Edu.Exp", "Life.Exp", "GNI", "Mat.Mor", "Ado.Birth", "Parli.F")
+human <- dplyr::select(human, one_of(keep))
 
-# look at the structure of the GNI column in 'human'
-str(human$GNI)
+## removing all rows with missing values
+human <- human[complete.cases(human), ]
 
+## removing observations related to regions instead of countries
+last <- nrow(human) - 7
+human <- human[1:last,]
 
-# columns to keep
-keep <- c("Country", "Edu2.FM", "Labo.FM", "Edu.Exp", "Life.Exp", "GNI", "Mat.Mor", "Ado.Birth", "Parli.F" )
-
-# select the 'keep' columns
-human <- select(human, one_of(keep))
-
-# print out a completeness indicator of the 'human' data
-complete.cases(human)
-
-# print out the data along with a completeness indicator as the last column
-data.frame(human[-1], comp = complete.cases(human))
-
-# filter out all rows with NA values
-human1 <- filter(human, complete.cases(human))
-head(human_)
-
-# remove the Country variable
-human1 <- select(human1, -Country)
-head(human1)
-dim(human1)
+# define row names by county and removing country column
+rownames(human) <- human$Country
+human <- select(human, -Country)
+dim(human)
