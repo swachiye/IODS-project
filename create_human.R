@@ -1,4 +1,4 @@
-## Sheila Aswani Wachiye
+## Sheila Wachiye
 ## 'human' dataset originally from the United Nations Development Programme.
 ## More info visit http://hdr.undp.org/en/content/human-development-index-hdi
 
