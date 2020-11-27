@@ -20,7 +20,7 @@ str(human)
 summary(human)
 
 # Mutate data
-mutate(human, displ_l = disp / 61.0237)
+mutate(human, GNI = GNI)
 
 # look at the structure of the GNI column in 'human'
 str(human$GNI)
