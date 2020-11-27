@@ -19,14 +19,14 @@ str(human)
 # print out summaries the data
 summary(human)
 
-# Mutate data
-mutate(human, GNI = GNI)
+# Mutate data and remove the commas from GNI and print out a numeric version of it
+human <- mutate(human, GNI =str_replace(human$GNI, pattern=",", replace ="")%>% as.numeric(human$GNI))
+names(human)
+head(human)
 
 # look at the structure of the GNI column in 'human'
 str(human$GNI)
 
-# remove the commas from GNI and print out a numeric version of it
-str_replace(human$GNI, pattern=",", replace ="")%>% as.numeric(human$GNI)
 
 # columns to keep
 keep <- c("Country", "Edu2.FM", "Labo.FM", "Edu.Exp", "Life.Exp", "GNI", "Mat.Mor", "Ado.Birth", "Parli.F" )
