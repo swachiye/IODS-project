@@ -55,9 +55,22 @@ head(RATSL)
 BPRSL <-  BPRSL %>% mutate(week = as.integer(substr(weeks,5,5)))
 
 # Extract the week number
-RATSL <-  RATSL %>% mutate(day = as.integer(substr(WD,2,2)))
+RATSL <-  RATSL %>% mutate(time = as.integer(substr(WD,3,4)))
 
-# Take a glimpse at the BPRSL data
+# Look at column name
+names(BPRSL)
+names(RATSL)
+
+# Assess the structure
+str(BPRSL)
+str(RATSL)
+
+# summaries of the variables
+summary(BPRSL)
+summary(RATSL)
+
+
+# Take a glimpse at the data
 glimpse(BPRSL)
-
 glimpse(RATSL)
+
