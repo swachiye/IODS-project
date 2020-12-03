@@ -15,10 +15,8 @@ RATS <- read.table("https://raw.githubusercontent.com/KimmoVehkalahti/MABS/maste
 
 
 # Save text files to folder 
-
 write.table(BPRS, file = "BPRS.txt", sep = "\t",row.names = TRUE, col.names = NA)
 write.table(RATS, file = "RATS.txt", sep = " \t",row.names = TRUE, col.names = NA)
-
 
 
 # Assess the column names
