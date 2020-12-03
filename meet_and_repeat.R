@@ -15,9 +15,9 @@ RATS <- read.table("https://raw.githubusercontent.com/KimmoVehkalahti/MABS/maste
 
 
 # Save text files to folder 
-write.csv(BPRS,  "BPRS.csv")
+
 write.table(BPRS, file = "BPRS.txt", sep = "\t",row.names = TRUE, col.names = NA)
-#write.table(RATS, file = "RATS.txt", sep = " \t",row.names = TRUE, col.names = NA)
+write.table(RATS, file = "RATS.txt", sep = " \t",row.names = TRUE, col.names = NA)
 
 
 
@@ -73,4 +73,12 @@ summary(RATSL)
 # Take a glimpse at the BPRSL data
 glimpse(BPRSL)
 glimpse(RATSL)
+
+getwd()
+# Save text files to folder 
+
+# Save text files to folder 
+write.table(BPRSL, file = "BPRSL.txt", sep = "\t",row.names = TRUE, col.names = NA)
+write.table(RATSL, file = "RATSL.txt", sep = " \t",row.names = TRUE, col.names = NA)
+
 
