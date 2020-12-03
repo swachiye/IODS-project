@@ -6,103 +6,59 @@ output: html_document
 ---
 ## Analysis of longitudinal data
 
-```{r setup, include=FALSE}
+```{r}
 # Access the packages dplyr and tidyr
 library(dplyr)
 library(tidyr)
-library("readr")
+library(readr)
 
-# Read the BPRS and KATS data
-BPRS <- read.table("https://raw.githubusercontent.com/KimmoVehkalahti/MABS/master/Examples/data/BPRS.txt", sep  =" ", header = T)
+# Read the BPRS and KATS data from folder
+BPRSL <- read.table("BPRSL.txt",  header = T)
+RATSL <- read.table("RATSL.txt",  header = T)
 
-RATS <- read.table("https://raw.githubusercontent.com/KimmoVehkalahti/MABS/master/Examples/data/rats.txt",  header = T)
-head(RATS)
 ```
 
-
-
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-
-
-# Save text files to folder 
-#write.csv(BPRS,  "BPRS.csv")
-#write.table(BPRS, file = "BPRS.txt", sep = "\t",row.names = TRUE, col.names = NA)
-#write.table(RATS, file = "RATS.txt", sep = " \t",row.names = TRUE, col.names = NA)
-
-
-
-# Assess the column names
-names(BPRS)
-names(RATS)
-
-# Look at the structureS
-str(BPRS)
-str(RATS)
-
-# Print out summaries of the variables
-
-summary(BPRS)
-head(BPRS)
-summary(RATS)
-
-# Convert the categorical variables of both data sets to factors. (1 point)
-
-# Factor treatment & subject
-BPRS$treatment <- factor(BPRS$treatment)
-BPRS$subject <- factor(BPRS$subject)
-RATS$ID <- factor(RATS$ID)
-RATS$Group <- factor(RATS$Group)
-
-# Convert to long form
-BPRSL <-  BPRS %>% gather(key = weeks, value = bprs, -treatment, -subject)
-head(BPRSL)
-
-
-RATSL <-  RATS %>% gather(key = WD, value = weight, -ID, -Group)
-head(RATSL)
-
-# Extract the week number
-BPRSL <-  BPRSL %>% mutate(week = as.integer(substr(weeks,5,5)))
-
-# Extract the week number
-RATSL <-  RATSL %>% mutate(time = as.integer(substr(WD,3,4)))
-
-# Look at column name
-names(BPRSL)
-names(RATSL)
-
-# Assess the structure
-str(BPRSL)
-str(RATSL)
-
-# summaries of the variables
+```{r}
 summary(BPRSL)
+```
+
+```{r}
 summary(RATSL)
+```
 
+## Look at the data
 
+```{r}
 # Take a glimpse at the data
 glimpse(BPRSL)
 glimpse(RATSL)
+```
+
+```{r}
+# Look at column name
+names(BPRSL)
+names(RATSL)
+```
+
+```{r}
+# Assess the structure
+str(BPRSL)
+str(RATSL)
+```
+
+```{r}
 
 ## Analysis of RATSL data
 library(ggplot2)
+library(dplyr)
+library(tidyr)
 p1 <- ggplot(RATSL, aes(x=time, y=weight, group=ID)) + geom_line() + facet_grid(.~Group, labeller = label_both)
 p1
-
+```
 ##Fig 8.2 equivalent
+```{r}
 # Standardize the scores
+str(RATSL)
 RATSL <- RATSL %>%
   group_by(time) %>%
   mutate(stdwd = (wd-mean(weight))/sd(weight))%>%
@@ -110,13 +66,18 @@ RATSL <- RATSL %>%
 glimpse(RATSL)
 p2 <- ggplot(RATSL, aes(x=time, y=stdwd, linetype=ID)) + geom_line() + facet_grid(.~Group, labeller = label_both)
 
+```
+
+```{r}
 #Fig 8.3 Equivalent
 n <- RATSL$time %>% unique() %>% length()
 RATSS <- RATSL %>%
   group_by(weight, time) %>%
   summarise(mean=mean(wd), se=sd(wd)/sqrt(n)) %>%
   ungroup()
+```
 
+```{r}
 #Fig 8.4 Equivalent
 p1 <- ggplot(RATSL, aes(x = factor(time), y = weight, fill = Group)) + geom_boxplot(position = position_dodge(width = 0.9))
 p1
